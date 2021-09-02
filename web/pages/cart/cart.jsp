@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -5,6 +6,34 @@
 <title>购物车</title>
 	<%--静态包含，base标签，css样式，jQuery文件--%>
 	<%@ include file="/pages/common/head.jsp"%>
+	<script type="text/javascript">
+		$(function (){
+			$("a.deleteItem").click(function (){
+				/*给删除加确定*/
+				return confirm("你确定要删除【" + $(this).parent().parent().find("td:first").text() +"】吗");
+			});
+			$("#clear").click(function (){
+				let b = confirm("你确定要清空购物车吗！");
+				if (b) {
+					return confirm("真的确定好了吗😁😁😁");
+				}else {
+					return false;
+				}
+			});
+			/*给Count绑定输入框改变事件*/
+			$(".updateCount").change(function (){
+				var name = $(this).parent().parent().find("td:first").text();
+				var count = this.value;
+				var bookId = $(this).attr("chanCountId");
+				if (confirm("你确定要将【"+ name +"】的数量修改为【"+ count +"】吗")) {
+
+					location.href="cart?action=updateCount&count="+count+"&id="+bookId;
+				}else {
+					this.value = this.defaultValue;
+				}
+			});
+		});
+	</script>
 </head>
 <body>
 	
@@ -25,38 +54,36 @@
 				<td>金额</td>
 				<td>操作</td>
 			</tr>		
-			<tr>
-				<td>时间简史</td>
-				<td>2</td>
-				<td>30.00</td>
-				<td>60.00</td>
-				<td><a href="#">删除</a></td>
-			</tr>	
-			
-			<tr>
-				<td>母猪的产后护理</td>
-				<td>1</td>
-				<td>10.00</td>
-				<td>10.00</td>
-				<td><a href="#">删除</a></td>
-			</tr>	
-			
-			<tr>
-				<td>百年孤独</td>
-				<td>1</td>
-				<td>20.00</td>
-				<td>20.00</td>
-				<td><a href="#">删除</a></td>
-			</tr>		
+			<c:forEach items="${sessionScope.cart.cartItems}" var="entry">
+				<tr>
+					<td>${entry.value.name}</td>
+					<td>
+						<input chanCountId="${entry.value.id}" class="updateCount" style="width: 40px" type="text" name="count" value="${entry.value.count}">
+					</td>
+					<td>${entry.value.price}</td>
+					<td>${entry.value.totalPrice}</td>
+					<td><a class="deleteItem" href="cart?action=deleteItem&id=${entry.value.id}">删除</a></td>
+				</tr>
+			</c:forEach>
+
 			
 		</table>
-		
-		<div class="cart_info">
-			<span class="cart_span">购物车中共有<span class="b_count">4</span>件商品</span>
-			<span class="cart_span">总金额<span class="b_price">90.00</span>元</span>
-			<span class="cart_span"><a href="#">清空购物车</a></span>
-			<span class="cart_span"><a href="pages/cart/checkout.html">去结账</a></span>
-		</div>
+
+		<c:if test="${empty sessionScope.cart.cartItems}">
+			<div style="width: 100px;height: 50px;margin: 100px auto;">
+
+				<h2>空空如也</h2>
+			</div>
+		</c:if>
+		<c:if test="${not empty sessionScope.cart.cartItems}">
+			<div class="cart_info">
+				<span class="cart_span">购物车中共有<span class="b_count">${sessionScope.cart.totalCount}</span>件商品</span>
+				<span class="cart_span">总金额<span class="b_price">${sessionScope.cart.totalPrice}</span>元</span>
+				<span class="cart_span"><a id="clear" href="cart?action=clear">清空购物车</a></span>
+				<span class="cart_span"><a href="order?action=createOrder">去结账</a></span>
+			</div>
+		</c:if>
+
 	
 	</div>
 

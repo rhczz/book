@@ -4,13 +4,23 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <filter>
+        <filter-name>ManagerFilter</filter-name>
+        <filter-class>com.book.filter.ManagerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ManagerFilter</filter-name>
+        <url-pattern>/pages/manager/*</url-pattern>
+        <url-pattern>/manager/book</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
     <!--<servlet>
         <servlet-name>registServlet</servlet-name>
-        <servlet-class>com.rhc.controller.RegistServlet</servlet-class>
+        <servlet-class>com.book.controller.RegistServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>registServlet</servlet-name>
@@ -19,7 +29,7 @@
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.rhc.controller.LoginServlet</servlet-class>
+        <servlet-class>com.book.controller.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -36,4 +46,22 @@
         <servlet-name>KaptchaServlet</servlet-name>
         <url-pattern>/kaptcha.jpg</url-pattern>
     </servlet-mapping>
+
+
+
+    <!--配置服务器出错后，自动跳转的页面-->
+    <error-page>
+        <!--错误类型-->
+        <error-code>500</error-code>
+        <!--要跳转的页面-->
+        <location>/pages/error/error500.jsp</location>
+    </error-page>
+
+    <!--配置服务器出错后，自动跳转的页面-->
+    <error-page>
+        <!--错误类型-->
+        <error-code>404</error-code>
+        <!--要跳转的页面-->
+        <location>/pages/error/error404.jsp</location>
+    </error-page>
 </web-app>

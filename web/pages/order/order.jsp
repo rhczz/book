@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -25,31 +26,36 @@
 		
 		<table>
 			<tr>
-				<td>日期</td>
+				<td>时间</td>
 				<td>金额</td>
 				<td>状态</td>
 				<td>详情</td>
-			</tr>		
-			<tr>
-				<td>2015.04.23</td>
-				<td>90.00</td>
-				<td>未发货</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>	
-			
-			<tr>
-				<td>2015.04.20</td>
-				<td>20.00</td>
-				<td>已发货</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>	
-			
-			<tr>
-				<td>2014.01.23</td>
-				<td>190.00</td>
-				<td>已完成</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>		
+				<td>操作</td>
+			</tr>
+			<c:forEach items="${requestScope.orders}" var="order">
+
+				<tr>
+					<td style="width: 120px">${order.createTime}</td>
+					<td>${order.price}</td>
+					<td>
+						<c:if test="${order.status == 0}">
+							未发货
+						</c:if>
+						<c:if test="${order.status == 1}">
+							已发货
+						</c:if>
+						<c:if test="${order.status == 2}">
+							已签收
+						</c:if>
+					</td>
+					<td><a href="order?action=orderDetails&id=${order.orderId}">查看详情</a></td>
+					<c:if test="${order.status == 1}">
+						<td><a href="order?action=receiveOrder&id=${order.orderId}">确认收货</a></td>
+					</c:if>
+				</tr>
+			</c:forEach>
+
+
 		</table>
 		
 	

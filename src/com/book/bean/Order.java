@@ -1,0 +1,81 @@
+package com.book.bean;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+ * @author rhc
+ * @date 2021/09/02 14:33:52
+ * @Version 1.0
+ */
+public class Order {
+    private String orderId;
+    private Date createTime;
+    private BigDecimal price;
+    //0表示未发货，1表示已经发货，2表示已签收
+    private Integer status = 0;
+    private Integer userId;
+
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", createTime=" + createTime +
+                ", price=" + price +
+                ", status=" + status +
+                ", userId=" + userId +
+                '}';
+    }
+
+    public Order() {
+    }
+
+    public Order(String orderId, Date createTime, BigDecimal price, Integer status, Integer userId) {
+        this.orderId = orderId;
+        this.createTime = createTime;
+        this.price = price;
+        this.status = status;
+        this.userId = userId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+}
