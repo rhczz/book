@@ -6,12 +6,15 @@ import com.book.bean.CartItem;
 import com.book.service.BookService;
 import com.book.service.impl.BookServiceImpl;
 import com.book.utils.WebUtils;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author rhc
@@ -51,6 +54,44 @@ public class CartServlet extends BaseServlet {
 
         //把最后一个添加的书存在session域中，给首页回显
         req.getSession().setAttribute("lastName",cartItem.getName());
+    }
+
+    /**
+     * 使用Ajax响应添加购物车返回的页面内容
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void ajaxAddItem(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        System.out.println("加入购物车！！");
+        //1. 获取请求参数 商品编号
+        int id = WebUtils.parseInt(req.getParameter("id"),0);
+        //2. 调用bookService.queryBookById(id)获取图书信息
+        Book book = bookService.queryBookById(id);
+        //3. 把图书信息转换成CartItem商品项
+        CartItem cartItem = new CartItem(id,book.getName(),1,book.getPrice(),book.getPrice());
+        //4. 调用cart.addItem(CartItem)添加商品项
+        Cart cart = (Cart) req.getSession().getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            req.getSession().setAttribute("cart",cart);
+        }
+        cart.addItem(cartItem);
+
+        //把最后一个添加的书存在session域中，给首页回显
+        req.getSession().setAttribute("lastName",cartItem.getName());
+
+        //返回购物车总数量和最后一次添加商品的名称
+        Map<String,Object> map = new HashMap<>();
+        map.put("totalCount",cart.getTotalCount());
+        map.put("lastName",cartItem.getName());
+
+        //将Map转换成json格式
+        Gson gson = new Gson();
+        String resultMaoJsonString = gson.toJson(map);
+
+        resp.getWriter().write(resultMaoJsonString);
     }
 
     /**

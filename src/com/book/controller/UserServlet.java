@@ -4,6 +4,7 @@ import com.book.bean.User;
 import com.book.service.UserService;
 import com.book.service.impl.UserServiceImpl;
 import com.book.utils.WebUtils;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
@@ -23,6 +26,30 @@ import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 public class UserServlet extends BaseServlet {
 
     private UserService userService = new UserServiceImpl();
+
+    /**
+     * 处理Ajax请求
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void ajaxExistsUsername(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //1. 获取请求的参数
+        String username = req.getParameter("username");
+        //2. 调用userservice.existsUsername();
+        boolean existsUsername = userService.existsUsername(username);
+        //3. 把返回的结果封装为Map集合
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("existsUsername",existsUsername);
+
+        //4. 使用gson将Map准换成json
+        Gson gson = new Gson();
+        String toJson = gson.toJson(resultMap);
+
+        //5. 通过响应的字符输出流，将json输出
+        resp.getWriter().write(toJson);
+    }
 
     /**
      * 处理登录的功能

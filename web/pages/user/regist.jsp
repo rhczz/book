@@ -9,6 +9,21 @@
 
 	<script type="text/javascript">
 		$(function (){
+
+			/*Ajax处理异步判断用户名是否存在*/
+			$("#username").blur(function (){
+				//1. 获取输入的用户名
+				let username = this.value;
+				//2. 发起ajax请求
+				$.getJSON("user","action=ajaxExistsUsername&username="+username,function (data){
+					if (data.existsUsername) {
+						$("span.errorMsg").text("用户名已经存在！");
+					} else {
+						$("span.errorMsg").text("用户名可用！");
+					}
+				});
+			});
+
 			//给验证码的图片绑定单击事件
 			$("#code_img").click(function (){
 				this.src= "${ BasePath }kaptcha.jpg?time=" + new Date().getTime();

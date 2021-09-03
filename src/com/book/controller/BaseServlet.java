@@ -36,6 +36,12 @@ public abstract class BaseServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //解决post请求乱码
+        req.setCharacterEncoding("utf-8");
+
+        //解决响应乱码
+        resp.setContentType("text/html;charset=utf-8");
+
         //获取表单隐藏域的value，value的值对应响应的业务方法名
         String action = req.getParameter("action");
 

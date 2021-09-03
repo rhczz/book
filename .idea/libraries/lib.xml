@@ -13,6 +13,7 @@
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/mysql-connector-java-5.1.37-bin.jar!/" />
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/kaptcha-2.3.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/taglibs-standard-impl-1.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gson-2.2.4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
